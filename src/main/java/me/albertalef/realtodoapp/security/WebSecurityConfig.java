@@ -57,7 +57,6 @@ public class WebSecurityConfig {
 		http.authorizeRequests().anyRequest().authenticated();
 		http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED));
 		http.httpBasic(Customizer.withDefaults());
-		http.formLogin();
 		http.addFilter(new JwtAuthenticationFilter(getAuthenticationManager(), "/jwt/login"));
 		http.addFilterBefore(new JwtAuthorizationFilter(getAuthenticationManager(), "/jwt/login"), UsernamePasswordAuthenticationFilter.class);
 		return http.build();
