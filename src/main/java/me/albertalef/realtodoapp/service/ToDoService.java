@@ -7,7 +7,6 @@ import me.albertalef.realtodoapp.model.ToDo;
 import me.albertalef.realtodoapp.repository.ToDoRepository;
 import me.albertalef.realtodoapp.request.patch.EditToDoRequest;
 import me.albertalef.realtodoapp.request.post.CreateToDoRequest;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -42,6 +41,16 @@ public class ToDoService {
 		todo.setFinishedAt(LocalDateTime.now());
 		return repository.save(todo);
 	}
+
+	public ToDo unFinish( int id ) {
+		ToDo todo = findById(id);
+
+		if(!todo.isFinishedAt()) throw new BadRequestException("This To Do is not finished!");
+
+		todo.setFinishedAt(null);
+		return repository.save(todo);
+	}
+
 	public ToDo edit( EditToDoRequest request ) {
 		ToDo todo = findById(request.getId());
 
