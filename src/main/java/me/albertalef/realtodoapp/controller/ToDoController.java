@@ -2,12 +2,9 @@ package me.albertalef.realtodoapp.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
-import me.albertalef.realtodoapp.exception.BadRequestException;
-import me.albertalef.realtodoapp.exception.details.BadRequestExceptionDetails;
 import me.albertalef.realtodoapp.model.ToDo;
 import me.albertalef.realtodoapp.request.patch.EditToDoRequest;
 import me.albertalef.realtodoapp.request.post.CreateToDoRequest;
@@ -76,6 +73,17 @@ public class ToDoController {
 	})
 	public ToDo finish( @PathVariable int id){
 		return service.finish(id);
+	}
+
+	@PatchMapping(path = "/unfinish/{id}")
+	@ResponseStatus(HttpStatus.ACCEPTED)
+	@Operation(summary = "Undo Finish a Task")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "202", description = "Successful Operation"),
+			@ApiResponse(responseCode = "400", description = "When Task with given id does not exist or when the Task is not finished", content = @Content())
+	})
+	public ToDo unFinish( @PathVariable int id){
+		return service.unFinish(id);
 	}
 
 	@PatchMapping(path = "/edit")
